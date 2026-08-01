@@ -54,3 +54,6 @@ docs/BOILERPLATE-BENCHMARK.md
 
 # Microsoft Office lock files
 ~$*
+
+# Internal QA notes — not for the public repo
+docs/REPLICATION-LOG.md
