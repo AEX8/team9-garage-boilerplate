@@ -82,5 +82,5 @@ Add a section with the collection name, field descriptions, and access pattern.
 ## Step 3 — Remind user
 
 After all files are created:
-> "Run `firebase deploy --only firestore:rules` (or `firebase deploy --only firestore`) to push the updated security rules to production."
-> "If you added a composite index, add it to `firebase/firestore.indexes.json` and deploy with `firebase deploy --only firestore:indexes`."
+> "Run `npx firebase-tools deploy --only firestore:rules` (or `npx firebase-tools deploy --only firestore`) to push the updated security rules to production."
+> "If you added a composite index, add it to `firebase/firestore.indexes.json` and deploy with `npx firebase-tools deploy --only firestore:indexes`."

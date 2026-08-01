@@ -82,15 +82,15 @@ base64 -w 0 service-account.json
 ## Manual Deployment
 
 ```bash
-# Authenticate locally (one-time)
-firebase login
+# Authenticate locally (one-time) — no install needed, npx runs the CLI on demand
+npx firebase-tools login
 
 # Firestore rules — free, no Blaze needed
-firebase deploy --only firestore:rules
-firebase deploy --only firestore:indexes
+npx firebase-tools deploy --only firestore:rules
+npx firebase-tools deploy --only firestore:indexes
 
 # Backend Cloud Function — optional, requires the Blaze plan
-firebase deploy --only functions
+npx firebase-tools deploy --only functions
 ```
 
 The frontend has no manual `firebase deploy` equivalent — it deploys via Vercel (dashboard push, or `vercel --prod` with the Vercel CLI if installed).

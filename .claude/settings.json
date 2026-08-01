@@ -122,7 +122,7 @@
           {
             "type": "command",
             "description": "Block firebase deploy without explicit approval",
-            "command": "if echo \"$CLAUDE_COMMAND\" | grep -qE 'firebase deploy'; then echo 'BLOCKED: `firebase deploy` deploys to production. This requires explicit user approval — do not run automatically.' >&2; exit 2; fi"
+            "command": "if echo \"$CLAUDE_COMMAND\" | grep -qE 'firebase(-tools)?([^|;&]*)deploy'; then echo 'BLOCKED: firebase deploy (including via npx firebase-tools) deploys to production. This requires explicit user approval — do not run automatically.' >&2; exit 2; fi"
           },
           {
             "type": "command",

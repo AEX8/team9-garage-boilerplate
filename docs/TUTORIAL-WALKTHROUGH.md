@@ -111,7 +111,7 @@ match /notes/{noteId} {
 }
 ```
 
-Deploy the updated rules before testing them: `firebase deploy --only firestore:rules`.
+Deploy the updated rules before testing them: `npx firebase-tools deploy --only firestore:rules`.
 
 ### Change 4 — `frontend/src/features/notes/actions/notes.actions.ts` (new file)
 
@@ -557,7 +557,7 @@ describe('Notes routes', () => {
 
 ### Security rules — verified with real HTTP calls against a live Firebase project
 
-After `firebase deploy --only firestore:rules`, two throwaway test users were created via the
+After `npx firebase-tools deploy --only firestore:rules`, two throwaway test users were created via the
 Identity Toolkit REST API and used to hit the Firestore REST API directly — the same rules the
 client SDK is subject to:
 

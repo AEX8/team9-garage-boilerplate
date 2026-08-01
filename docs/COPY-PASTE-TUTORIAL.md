@@ -212,14 +212,14 @@ service cloud.firestore {
 ```
 
 **This file only takes effect once you deploy it.** After saving, run this in your terminal from
-the repo root:
+the repo root (no install needed — `npx` downloads the Firebase CLI on the fly the first time):
 
 ```bash
-firebase deploy --only firestore:rules
+npx firebase-tools deploy --only firestore:rules
 ```
 
-(First time only: run `firebase login` and make sure `.firebaserc` has your real project id —
-see `GUIDE.md § 2`.)
+(First time only: run `npx firebase-tools login` — it opens a browser to authorize — and make
+sure `.firebaserc` has your real project id, see `GUIDE.md § 2`.)
 
 ---
 
@@ -550,7 +550,7 @@ pnpm run dev
 4. It should appear in the list immediately — no page refresh
 
 If you see "Missing or insufficient permissions," you forgot to deploy the rules from File 3
-(`firebase deploy --only firestore:rules`).
+(`npx firebase-tools deploy --only firestore:rules`).
 
 ---
 

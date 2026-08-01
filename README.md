@@ -23,7 +23,7 @@ There's no local emulator and no Docker — the app always talks to a real (free
 
 - **Node.js 22** — [nodejs.org](https://nodejs.org)
 - **pnpm** — `npm install -g pnpm`
-- Optional: Firebase CLI (`npm i -g firebase-tools`) for deploys
+- No Firebase CLI install needed — `npx firebase-tools` runs it on demand for rule deploys
 
 ### 1. Bootstrap
 
@@ -76,7 +76,7 @@ Restart the dev server after changing `.env` — `NEXT_PUBLIC_*` variables are b
 | `Invalid project id: REPLACE_WITH_...` | Set the real project id in `.firebaserc`. |
 | `'next' is not recognized` / `Command "next" not found` | Run `pnpm install` from the **repo root**. If it persists, delete all `node_modules` folders and reinstall. |
 | Ignored build scripts warning from pnpm | Build approvals live in `pnpm-workspace.yaml` (`allowBuilds`) — re-run `pnpm install`. |
-| "Missing or insufficient permissions" | Firestore security rules don't allow that access — add rules in `firebase/firestore.rules`, then deploy them (`firebase deploy --only firestore:rules`). |
+| "Missing or insufficient permissions" | Firestore security rules don't allow that access — add rules in `firebase/firestore.rules`, then deploy them (`npx firebase-tools deploy --only firestore:rules`). |
 | Commit rejected | Message must be Conventional Commits (`feat: …`, `fix: …`). |
 
 More beginner-oriented pitfalls: [docs/GUIDE.md § Common pitfalls](docs/GUIDE.md#6-common-pitfalls).
@@ -176,8 +176,8 @@ See [CLAUDE.md](CLAUDE.md) for the full harness reference.
 The frontend deploys to **Vercel** (free Hobby tier, no billing account needed — this app is server-rendered, so it needs a server host, not static hosting). Firestore rules deploy automatically from CI on merge to `main`; the optional backend (Cloud Function) deploys manually and requires Firebase's paid Blaze plan. Full setup: [docs/CI-CD.md](docs/CI-CD.md).
 
 ```bash
-firebase deploy --only firestore:rules    # rules — free
-firebase deploy --only functions          # backend — optional, requires Blaze
+npx firebase-tools deploy --only firestore:rules    # rules — free
+npx firebase-tools deploy --only functions          # backend — optional, requires Blaze
 ```
 
 ## Forking for a Client Project

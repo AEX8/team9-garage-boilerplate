@@ -88,7 +88,7 @@ There's no local emulator — the backend talks to the real Firebase project con
 
 ```bash
 pnpm --filter backend build
-firebase deploy --only functions
+npx firebase-tools deploy --only functions
 ```
 
 The function is deployed to `australia-southeast1`. Change the region in `src/index.ts`.

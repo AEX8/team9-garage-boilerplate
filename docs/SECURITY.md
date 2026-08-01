@@ -194,7 +194,7 @@ await adminAuth.setCustomUserClaims(uid, { admin: true })
 ### Deploying rules
 
 ```bash
-firebase deploy --only firestore:rules
+npx firebase-tools deploy --only firestore:rules
 ```
 
 Never deploy rules from a local machine in production — use the CI deploy workflow.
