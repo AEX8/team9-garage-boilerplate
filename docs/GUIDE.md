@@ -51,7 +51,7 @@ This installs dependencies, creates the root `.env` from the template, and gener
 2. Enable **Authentication** (Email/Password + Google) and create a **Firestore** database
 3. Project settings → **Your apps** → add a **Web app** → copy each `firebaseConfig` value into `.env` (the variable names match: `apiKey` → `NEXT_PUBLIC_FIREBASE_API_KEY`, etc.)
 4. Project settings → **Service accounts** → generate a private key → base64-encode it (macOS: `base64 -i service-account.json | tr -d '\n'`; Linux: `base64 -w 0 service-account.json`) → paste into `FIREBASE_SERVICE_ACCOUNT_KEY_BASE64` in `.env`
-5. Set `FIREBASE_PROJECT_ID` in `.env` and put the same id in `.firebaserc` (replacing the placeholder)
+5. Set `NEXT_PUBLIC_FIREBASE_PROJECT_ID` in `.env` and put the same id in `.firebaserc` (replacing the placeholder)
 
 After changing anything in `.env`, run `pnpm run env:sync` (or just restart `pnpm run dev` — it syncs automatically).
 
@@ -349,6 +349,7 @@ Then commit (`feat: add notes feature`) and open a PR to `main`. Before the PR, 
 | Symptom | Cause & fix |
 |---------|-------------|
 | `auth/invalid-api-key` on startup | `NEXT_PUBLIC_FIREBASE_*` values are empty in the root `.env`. Paste them from the Firebase web app config, then **restart** the dev server (it re-syncs env automatically). |
+| "Firebase web config is incomplete" on Vercel | A `NEXT_PUBLIC_FIREBASE_*` env var is missing in Vercel's project settings. Add it (same name as your root `.env`), then redeploy — Vercel doesn't retroactively apply new env vars to existing deployments. |
 | Changed an env var, nothing happened | Edit the root `.env` (not the generated files), then restart `pnpm run dev` — `NEXT_PUBLIC_*` values are baked in at startup. |
 | Edited `frontend/.env.local` or `backend/.env` and it got overwritten | Those files are generated. Make the change in the root `.env` instead. |
 | "Missing or insufficient permissions" from Firestore | Your security rules don't allow the read/write. Add rules for the collection in `firebase/firestore.rules`, then deploy them: `npx firebase-tools deploy --only firestore:rules`. |
@@ -363,7 +364,7 @@ More troubleshooting lives in the [README](../README.md#troubleshooting).
 
 ## 7. Shipping it
 
-Local dev talks to your Firebase project already — going live just means putting the frontend somewhere public. Deploy to [Vercel](https://vercel.com) (free, no billing account needed): sign in with GitHub, **Add New Project**, import this repo, set **Root Directory** to `frontend`, then add the `NEXT_PUBLIC_FIREBASE_*` values and `FIREBASE_SERVICE_ACCOUNT_KEY_BASE64` from your `.env` as environment variables. Full steps, including why it's Vercel and not Firebase Hosting: [CI-CD.md § Vercel Setup](CI-CD.md#vercel-setup-frontend).
+Local dev talks to your Firebase project already — going live just means putting the frontend somewhere public. Deploy to [Vercel](https://vercel.com) (free, no billing account needed): sign in with GitHub, **Add New Project**, import this repo, set **Root Directory** to `frontend`, then add the environment variables listed in [CI-CD.md § Vercel Setup](CI-CD.md#vercel-setup-frontend) — Vercel doesn't read your root `.env` file, so each variable has to be added manually under the same name it has there.
 
 ## 8. Going further
 

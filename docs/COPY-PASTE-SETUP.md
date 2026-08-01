@@ -127,7 +127,7 @@ Open the root `.env` file (created in Step 1) in your code editor. Fill in each 
 
 | Variable | Where it comes from |
 |----------|---------------------|
-| `FIREBASE_PROJECT_ID` | The project ID from Step 2 (e.g. `my-capstone-app-a1b2c`) |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | The project ID from Step 2 (e.g. `my-capstone-app-a1b2c`) |
 | `FIREBASE_SERVICE_ACCOUNT_KEY_BASE64` | The long string from Step 4 |
 | `NEXT_PUBLIC_FIREBASE_API_KEY` | `apiKey` from Step 3 |
 | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | `authDomain` from Step 3 |

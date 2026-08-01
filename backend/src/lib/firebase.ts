@@ -12,7 +12,7 @@ function getAdminApp(): App {
 
   return initializeApp({
     credential: cert(JSON.parse(Buffer.from(encodedKey, 'base64').toString('utf8'))),
-    projectId: process.env.FIREBASE_PROJECT_ID,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
   })
 }
 

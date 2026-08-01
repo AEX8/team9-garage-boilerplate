@@ -54,7 +54,7 @@ Create a project at [console.firebase.google.com](https://console.firebase.googl
    # Windows PowerShell (single quotes around the path)
    [Convert]::ToBase64String([IO.File]::ReadAllBytes('C:\path\to\service-account.json'))
    ```
-4. Set `FIREBASE_PROJECT_ID` in `.env` and the same id in `.firebaserc` (`projects.default`)
+4. Set `NEXT_PUBLIC_FIREBASE_PROJECT_ID` in `.env` and the same id in `.firebaserc` (`projects.default`)
 
 Full variable reference: [docs/ENV-VARS.md](docs/ENV-VARS.md).
 
@@ -73,6 +73,7 @@ Restart the dev server after changing `.env` — `NEXT_PUBLIC_*` variables are b
 | Symptom | What to try |
 |--------|-------------|
 | `auth/invalid-api-key` | Fill every `NEXT_PUBLIC_FIREBASE_*` value in the root `.env`, run `pnpm run env:sync`, then restart the dev server. |
+| "Firebase web config is incomplete" on Vercel | A `NEXT_PUBLIC_FIREBASE_*` env var is missing in Vercel. Add it under Project Settings → Environment Variables (same names as your local `.env`), then redeploy — existing deployments don't pick up new env vars automatically. See [docs/CI-CD.md § Vercel Setup](docs/CI-CD.md#vercel-setup-frontend). |
 | `Invalid project id: REPLACE_WITH_...` | Set the real project id in `.firebaserc`. |
 | `'next' is not recognized` / `Command "next" not found` | Run `pnpm install` from the **repo root**. If it persists, delete all `node_modules` folders and reinstall. |
 | Ignored build scripts warning from pnpm | Build approvals live in `pnpm-workspace.yaml` (`allowBuilds`) — re-run `pnpm install`. |

@@ -55,7 +55,7 @@ function checkFirebaserc() {
   const def = data?.projects?.default
   if (typeof def === 'string' && (def.includes('REPLACE_WITH') || def.trim() === '')) {
     warn(
-      '.firebaserc still uses a template project id. Set projects.default to your real Firebase project id (same as FIREBASE_PROJECT_ID).',
+      '.firebaserc still uses a template project id. Set projects.default to your real Firebase project id (same as NEXT_PUBLIC_FIREBASE_PROJECT_ID).',
     )
   }
 }
@@ -93,7 +93,7 @@ console.log(`
   2. Enable Authentication (Email/Password, or your chosen sign-in method)
      and Firestore Database.
   3. Fill in .env:
-       - FIREBASE_PROJECT_ID (same id in .firebaserc → "default")
+       - NEXT_PUBLIC_FIREBASE_PROJECT_ID (same id in .firebaserc → "default")
        - FIREBASE_SERVICE_ACCOUNT_KEY_BASE64 (Project settings → Service accounts)
        - NEXT_PUBLIC_FIREBASE_* (Project settings → Your apps → web app config)
        - NEXT_PUBLIC_APP_NAME

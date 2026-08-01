@@ -40,11 +40,11 @@ All configuration lives in the **root `.env`** (never edit `frontend/.env.local`
    - Build → Authentication → get started → enable a sign-in method (Email/Password is simplest)
    - Build → Firestore Database → create database (start in production mode; rules already live in `firebase/firestore.rules`)
 3. Fill `.env` from the Firebase console:
-   - `FIREBASE_PROJECT_ID` — Project settings → General → Project ID
+   - `NEXT_PUBLIC_FIREBASE_PROJECT_ID` — Project settings → General → Project ID
    - `FIREBASE_SERVICE_ACCOUNT_KEY_BASE64` — Project settings → Service accounts → Generate new private key, then base64-encode the downloaded JSON (macOS: `base64 -i service-account.json | tr -d '\n'` — BSD `base64` has no `-w` flag; Linux: `base64 -w 0 service-account.json`)
    - `NEXT_PUBLIC_FIREBASE_*` — Project settings → Your apps → add/open a web app → copy the `firebaseConfig` values
    - `NEXT_PUBLIC_APP_NAME`
-4. `.firebaserc` → `projects.default` must equal `FIREBASE_PROJECT_ID`.
+4. `.firebaserc` → `projects.default` must equal `NEXT_PUBLIC_FIREBASE_PROJECT_ID`.
 5. `pnpm run env:sync`
 
 Verify: `frontend/.env.local` and `backend/.env` exist and contain the values from `.env` (`NEXT_PUBLIC_FIREBASE_PROJECT_ID`, `FIREBASE_SERVICE_ACCOUNT_KEY_BASE64`, etc).
@@ -94,7 +94,7 @@ Output a summary the user can act on:
 ```
 ## Bootstrap complete ✅
 
-Firebase project: <FIREBASE_PROJECT_ID>
+Firebase project: <NEXT_PUBLIC_FIREBASE_PROJECT_ID>
 App:              http://localhost:3000
 Test user:        smoke-test@example.com / test1234 (delete from Firebase console when done)
 

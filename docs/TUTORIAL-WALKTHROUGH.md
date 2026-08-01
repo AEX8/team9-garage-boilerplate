@@ -601,7 +601,7 @@ hit Firestore directly with the user's ID token to confirm the rules behave as e
 
 ```bash
 API_KEY=<NEXT_PUBLIC_FIREBASE_API_KEY from .env>
-PROJECT_ID=<FIREBASE_PROJECT_ID from .env>
+PROJECT_ID=<NEXT_PUBLIC_FIREBASE_PROJECT_ID from .env>
 
 # get a token
 curl -s -X POST "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=$API_KEY" \

@@ -39,7 +39,7 @@ Merge to main
    |----------|-------|
    | `NEXT_PUBLIC_FIREBASE_API_KEY` | from `firebaseConfig` |
    | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | from `firebaseConfig` |
-   | `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | from `firebaseConfig` |
+   | `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | from `firebaseConfig` — same name as in your root `.env` |
    | `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | from `firebaseConfig` |
    | `NEXT_PUBLIC_FIREBASE_APP_ID` | from `firebaseConfig` |
    | `NEXT_PUBLIC_APP_NAME` | app display name |
@@ -55,7 +55,7 @@ Add these in **GitHub → Settings → Secrets and variables → Actions**:
 
 | Secret | Description |
 |--------|-------------|
-| `FIREBASE_PROJECT_ID` | Firebase project ID (used as `--project` flag) |
+| `FIREBASE_PROJECT_ID` | Firebase project ID (used as `--project` flag). GitHub Actions secrets are never exposed to a browser, so this one intentionally keeps the bare name instead of the `NEXT_PUBLIC_` prefix used in `.env`/Vercel — value is the same project ID either way. |
 | `FIREBASE_SERVICE_ACCOUNT_KEY_BASE64` | Base64-encoded service account JSON |
 
 ### Getting the service account key

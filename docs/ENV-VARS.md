@@ -23,7 +23,7 @@ pnpm run env:sync       # also runs automatically before `pnpm run dev`
 
 | Variable | Secret | Required | Description |
 |---------|--------|----------|-------------|
-| `FIREBASE_PROJECT_ID` | No | Yes | Firebase project id — must match `.firebaserc`. Synced to backend and (as `NEXT_PUBLIC_FIREBASE_PROJECT_ID`) to the frontend. |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | No | Yes | Firebase project id — must match `.firebaserc`. Synced under the same name to both frontend and backend. |
 | `FIREBASE_SERVICE_ACCOUNT_KEY_BASE64` | **Yes** | Yes | Base64-encoded service account JSON. Synced to both packages; server-only in each. |
 | `NEXT_PUBLIC_FIREBASE_API_KEY` | No | Yes | Firebase web app config → `apiKey` |
 | `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | No | Yes | Web app config → `authDomain` |
