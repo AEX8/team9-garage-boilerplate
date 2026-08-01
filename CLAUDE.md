@@ -165,25 +165,24 @@ Run these with `/skill-name` in Claude Code:
 
 | Skill | Description |
 |-------|-------------|
-| `/git-feature` | Gitflow: create `feature/*` branch from `develop` + draft PR |
-| `/git-hotfix` | Gitflow: create `hotfix/*` branch from `main` + PR |
-| `/git-release` | Gitflow: create `release/*` branch, bump versions, PR to `main` |
+| `/git-feature` | Create `feature/*` branch from `main` + draft PR back to `main` |
+| `/git-hotfix` | Create `hotfix/*` branch from `main` + PR back to `main` |
+| `/git-release` | Tag the current `main` as a milestone/submission checkpoint |
 
 ---
 
 ## Agent Permissions
 
 **CAN do autonomously:**
-- Create feature branches from `develop` and commit/push to them
-- Create draft PRs targeting `develop`
+- Create feature branches from `main` and commit/push to them
+- Create draft PRs targeting `main`
 - Read, edit, and create files within the repo
 - Run `pnpm` commands (lint, typecheck, test, build)
 - Use MCP tools (context7, firebase, stitch)
 
 **CANNOT do without explicit user approval:**
 - Merge or close PRs
-- Push to `main` or `develop` directly
-- Create `release/*` or `hotfix/*` branches
+- Push to `main` directly
 - Delete branches
 - Deploy to production (`firebase deploy`)
 - Modify CI/CD workflow files
@@ -228,7 +227,7 @@ Always use `pnpm`. Run commands as:
 - Unit tests use supertest + mocked Firebase Admin (no real Firebase calls).
 
 ### Git
-- Branch from `develop` for features, from `main` for hotfixes. Never commit directly to `main` or `develop`.
+- Branch from `main` for everything (`feature/*`, `hotfix/*`). Never commit directly to `main`.
 - Commit messages must follow Conventional Commits — enforced by the `commit-msg` hook.
 - Use `/git-feature`, `/git-hotfix`, `/git-release` skills for branch management.
 
@@ -249,7 +248,7 @@ Always use `pnpm`. Run commands as:
 - Docker / local Firebase emulators — not part of this setup; the app always talks to your real (free Spark-plan) Firebase project
 - `NEXT_PUBLIC_` prefix on secret values (service account, API keys)
 - Committing `.env.local` or `.env` — they are gitignored
-- Committing directly to `main` or `develop`
+- Committing directly to `main`
 - Inline styles — use Tailwind classes
 - CSS-in-JS (styled-components, emotion) — not part of this stack
 

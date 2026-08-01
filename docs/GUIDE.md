@@ -75,7 +75,7 @@ Every feature follows the same rhythm:
 branch → build → verify → PR
 ```
 
-1. **Branch** — never work on `main` or `develop`. Use the `/git-feature` skill in Claude Code, or manually: `git checkout develop && git checkout -b feature/my-feature`
+1. **Branch** — never work directly on `main`. Use the `/git-feature` skill in Claude Code, or manually: `git checkout main && git pull && git checkout -b feature/my-feature`
 2. **Build** — use the scaffolding skills (below) so new code lands in the right shape
 3. **Verify** — run `/verify` in Claude Code, or manually: `pnpm run typecheck && pnpm run lint && pnpm run test:all`
 4. **PR** — commits must follow [Conventional Commits](https://www.conventionalcommits.org/) (`feat: add notes list`); the commit hook rejects anything else
@@ -86,7 +86,7 @@ branch → build → verify → PR
 
 Every step below — including the security rules — was verified against a real Firebase project, not just written and assumed correct. See [TUTORIAL-WALKTHROUGH.md](TUTORIAL-WALKTHROUGH.md) for the exact results (allow/deny cases, HTTP status codes, test commands).
 
-**Prefer pure copy-paste, no explanation, no AI?** [COPY-PASTE-TUTORIAL.md](COPY-PASTE-TUTORIAL.md) has the same feature broken into exact file paths and full file contents — nothing to interpret, no skills mentioned.
+**Prefer pure copy-paste, no explanation, no AI?** [COPY-PASTE-FEATURE.md](COPY-PASTE-FEATURE.md) has the same feature broken into exact file paths and full file contents — nothing to interpret, no skills mentioned. (Setting up the app itself, the same way: [COPY-PASTE-SETUP.md](COPY-PASTE-SETUP.md).)
 
 ### Step 1 — Define the data (type + rules + docs)
 
@@ -315,7 +315,7 @@ Add a link to the page in `frontend/src/components/layout/Sidebar.tsx`, and you 
 
 ### Step 5 — (Optional) add an API endpoint
 
-Only needed when logic shouldn't run in the frontend. Run `/add-route` and Claude scaffolds `backend/src/routes/notes.ts`, mounts it, and writes the tests. The full code, if you're doing it by hand, is in [COPY-PASTE-TUTORIAL.md § Files 9–11](COPY-PASTE-TUTORIAL.md). The pattern is documented in [BACKEND.md](BACKEND.md).
+Only needed when logic shouldn't run in the frontend. Run `/add-route` and Claude scaffolds `backend/src/routes/notes.ts`, mounts it, and writes the tests. The full code, if you're doing it by hand, is in [COPY-PASTE-FEATURE.md § Files 10–12](COPY-PASTE-FEATURE.md). The pattern is documented in [BACKEND.md](BACKEND.md).
 
 ### Step 6 — Verify and ship
 
@@ -325,7 +325,7 @@ Only needed when logic shouldn't run in the frontend. Run `/add-route` and Claud
 
 Or manually: `pnpm run typecheck && pnpm run lint && pnpm run test:all`.
 
-Then commit (`feat: add notes feature`) and open a PR to `develop`. Before the PR, it's worth asking Claude to run the **security-reviewer** agent over your staged changes.
+Then commit (`feat: add notes feature`) and open a PR to `main`. Before the PR, it's worth asking Claude to run the **security-reviewer** agent over your staged changes.
 
 ---
 
@@ -368,7 +368,8 @@ Local dev talks to your Firebase project already — going live just means putti
 ## 8. Going further
 
 - [TUTORIAL-WALKTHROUGH.md](TUTORIAL-WALKTHROUGH.md) — this guide executed end-to-end, with every code change and verification result
-- [COPY-PASTE-TUTORIAL.md](COPY-PASTE-TUTORIAL.md) — the same feature, pure copy-paste, no AI, exact file paths
+- [COPY-PASTE-SETUP.md](COPY-PASTE-SETUP.md) — Part 1, pure copy-paste, no AI: install, connect Firebase, run
+- [COPY-PASTE-FEATURE.md](COPY-PASTE-FEATURE.md) — Part 2, pure copy-paste, no AI: build the feature, branch, commit, PR
 - [garage-boilerplate-guide.pptx](garage-boilerplate-guide.pptx) — slide deck covering the whole system, including how the AI tooling fits in
 - [notes-feature-tutorial.pptx](notes-feature-tutorial.pptx) — this walkthrough as a slide deck, one step per slide
 - [ARCHITECTURE.md](ARCHITECTURE.md) — diagrams and the reasoning behind the design

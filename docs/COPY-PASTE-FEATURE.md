@@ -1,20 +1,31 @@
-# Build Your First Feature — Copy-Paste Edition
+# Part 2 — Build Your First Feature
 
-This is a no-shortcuts version of the same tutorial in [GUIDE.md](GUIDE.md). No AI tools, no
-Claude Code skills, no judgment calls about "where roughly this code goes." Every file below
-tells you the **exact path** and gives you the **exact, complete content** to put there. If a
-file already exists, you're told to replace its entire contents — not to guess where to insert
-something in the middle of it.
+This is a no-shortcuts version of building a feature: no AI tools, no Claude Code skills, no
+judgment calls about "where roughly this code goes." Every file below tells you the **exact
+path** and gives you the **exact, complete content** to put there.
 
-By the end you'll have a working "notes" feature: signed-in users can write a note and see only
-their own notes, live-updating, correctly secured so nobody can read or write someone else's
-notes.
+**Before you start:** finish **[Part 1 — Setup](COPY-PASTE-SETUP.md)** first. You should have
+the app running at `http://localhost:3000` and be able to sign up and land on `/dashboard`.
 
-**Before you start:** you need the app already running against a real Firebase project. That
-part is unavoidably click-around-in-a-console rather than copy-paste — follow
-[GUIDE.md § 1–2](GUIDE.md) first (installing Node/pnpm, `pnpm run bootstrap`, creating a free
-Firebase project, filling in `.env`). Come back here once `pnpm run dev` shows the app at
-`http://localhost:3000` and you can sign up and land on `/dashboard`.
+By the end you'll have a working "notes" feature — signed-in users can write a note and see only
+their own notes, live-updating, correctly secured so nobody can read or write someone else's —
+built and shipped the same way every change goes into this repo: its own branch, verified,
+committed, opened as a pull request.
+
+---
+
+## Step 0 — Create a branch
+
+Never make changes directly on `main`. Create a branch named after what you're building:
+
+```bash
+git checkout main
+git pull origin main
+git checkout -b feature/notes
+```
+
+`feature/{kebab-case-name}` is the naming convention this repo uses — see
+[GIT-WORKFLOW.md](GIT-WORKFLOW.md). Everything below happens on this branch.
 
 ---
 
@@ -218,8 +229,7 @@ the repo root (no install needed — `npx` downloads the Firebase CLI on the fly
 npx firebase-tools deploy --only firestore:rules
 ```
 
-(First time only: run `npx firebase-tools login` — it opens a browser to authorize — and make
-sure `.firebaserc` has your real project id, see `GUIDE.md § 2`.)
+(First time only: run `npx firebase-tools login` — it opens a browser to authorize.)
 
 ---
 
@@ -565,15 +575,37 @@ pnpm run test:all    # backend + frontend unit tests must all pass
 pnpm run build       # confirms the production build compiles
 ```
 
-If everything above is green, commit:
+All four must pass before you move on.
+
+---
+
+## Commit, push, and open a pull request
 
 ```bash
 git add .
 git commit -m "feat: add notes feature"
 ```
 
-(The commit message must start with `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, or `chore:`
-— a git hook rejects anything else.)
+The commit message must start with `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, or `chore:` —
+a git hook rejects anything else. If you made several unrelated changes, commit them separately
+instead of bundling everything into one message.
+
+```bash
+git push -u origin feature/notes
+```
+
+Then open a pull request back into `main`. Either through GitHub's website (it'll show a
+"Compare & pull request" banner right after the push), or from the terminal if you have the
+[GitHub CLI](https://cli.github.com) installed:
+
+```bash
+gh pr create --base main --title "feat: add notes feature" \
+  --body "Adds a notes feature — users can create and see their own notes."
+```
+
+Once CI passes (lint, typecheck, tests all run automatically on the PR) and it's reviewed,
+merge it. `main` is protected — you can't push to it directly, which is why Step 0 had you
+branch off it in the first place.
 
 ---
 
@@ -734,6 +766,7 @@ Run `pnpm run test` (backend) to confirm these pass.
 
 ## What you just built
 
+- A feature branch, kept separate from `main` until the work was reviewed and merged
 - A Firestore collection (`notes`) with a TypeScript type, a typed collection accessor, and
   security rules that only let a user read or write their own documents
 - A Server Action (`createNote`) — the standard pattern every mutation in this app follows:
@@ -742,6 +775,7 @@ Run `pnpm run test` (backend) to confirm these pass.
 - A live-updating list powered by a Firestore realtime subscription
 - (Optional) an HTTP API endpoint doing the same thing, for cases where the frontend can't be
   trusted with the logic directly
+- A verified, committed, reviewed pull request — the same loop every change in this repo follows
 
 Every piece here mirrors a real pattern in the codebase — `users` (auth profiles) works exactly
 the same way. See [ARCHITECTURE.md](ARCHITECTURE.md) if you want to understand *why* it's shaped

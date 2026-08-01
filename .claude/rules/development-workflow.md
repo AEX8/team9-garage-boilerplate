@@ -39,4 +39,4 @@ For tasks that touch more than 3 files or involve architectural decisions:
 - Follow Conventional Commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
 - One logical change per commit
 - Run `pnpm run validate` before committing (checks for unreplaced template placeholders)
-- Never commit directly to `main` or `develop` — use feature branches via `/git-feature`
+- Never commit directly to `main` — use feature branches via `/git-feature`

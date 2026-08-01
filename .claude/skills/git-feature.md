@@ -1,16 +1,16 @@
 ---
-description: Create a Gitflow feature branch from develop and open a draft PR. Use when starting new work.
+description: Create a feature branch from main and open a draft PR. Use when starting new work.
 argument-hint: "[feature-name]"
 ---
 
 # Skill: /git-feature
 
-Create a Gitflow feature branch and open a draft PR targeting `develop`.
+Create a feature branch and open a draft PR targeting `main`.
 
 ## Step 1 — Gather requirements
 
 Ask the user:
-1. **Feature name** — short kebab-case description (e.g., `invoice-pdf-export`, `team-invitations`)
+1. **Feature name** — short kebab-case description (e.g., `notes`, `team-invitations`)
 2. **Brief description** — one sentence for the PR description
 
 ## Step 2 — Execute
@@ -18,8 +18,8 @@ Ask the user:
 ```bash
 # Ensure we're up to date
 git fetch origin
-git checkout develop
-git pull origin develop
+git checkout main
+git pull origin main
 
 # Create the feature branch
 git checkout -b feature/{feature-name}
@@ -29,14 +29,14 @@ git push -u origin feature/{feature-name}
 gh pr create \
   --title "feat: {feature-name}" \
   --body "## Summary\n- {brief-description}\n\n## Test plan\n- [ ] Unit tests pass\n- [ ] Manual smoke test against a dev Firebase project\n\n🤖 Generated with Claude Code" \
-  --base develop \
+  --base main \
   --draft
 ```
 
 ## Conventions
 
-- Branch name: `feature/{kebab-case-name}` — always branched from `develop`
-- PR targets `develop` (not `main`)
+- Branch name: `feature/{kebab-case-name}` — always branched from `main`
+- PR targets `main`
 - Start as a draft until it's ready for review
 - Commit messages must follow Conventional Commits (enforced by commit-msg hook):
   - `feat:` new feature
@@ -48,4 +48,4 @@ gh pr create \
 
 ## After the PR is merged
 
-The branch is deleted automatically by GitHub. Do not manually delete `develop`.
+The branch is deleted automatically by GitHub.

@@ -1,43 +1,38 @@
 # Git Workflow
 
-This project uses **Gitflow**. All branch management is automated via Claude Code skills.
+A single `main` branch — no `develop`, no release branches. Simple enough for a capstone team:
+branch, build, PR, merge.
 
 ## Branch Structure
 
 ```
-main         ← production (protected, deploys automatically)
+main         ← production (protected, deploys automatically on push)
   ↑
-develop      ← integration (protected, CI runs on every push)
-  ↑
-feature/*    ← new features (branched from develop)
-release/*    ← release prep (branched from develop)
-hotfix/*     ← urgent production fixes (branched from main)
+feature/*    ← new features (branched from main, PR back to main)
+hotfix/*     ← urgent fixes (branched from main, PR back to main)
 ```
 
 ## Branch Naming
 
 | Type | Pattern | Example |
 |------|---------|---------|
-| Feature | `feature/{kebab-case}` | `feature/invoice-pdf-export` |
+| Feature | `feature/{kebab-case}` | `feature/notes` |
 | Hotfix | `hotfix/{kebab-case}` | `hotfix/auth-token-expiry` |
-| Release | `release/{semver}` | `release/1.3.0` |
 
 ## Workflow
 
-### New feature
 ```
-/git-feature → creates feature/* → PR to develop → merge → delete branch
+git checkout main && git pull
+git checkout -b feature/{name}
+# ...make changes, commit...
+git push -u origin feature/{name}
+gh pr create --base main
+# review, merge, GitHub deletes the branch automatically
 ```
 
-### Production fix
-```
-/git-hotfix → creates hotfix/* from main → PR to main → merge → back-merge to develop → tag
-```
-
-### Release
-```
-/git-release → creates release/* → version bump → PR to main → merge → tag → back-merge to develop
-```
+`/git-feature` and `/git-hotfix` (Claude Code skills) automate exactly this. There's no
+functional difference between the two branch types — `hotfix/*` is just a naming convention to
+flag "this is an urgent fix" to reviewers.
 
 ## Commit Messages (Conventional Commits)
 
@@ -47,9 +42,9 @@ The `commit-msg` hook enforces this format:
 type(scope): description
 
 Examples:
-feat: add invoice PDF export
+feat: add notes feature
 fix(auth): handle token expiry on refresh
-docs: update Firestore schema for invoices
+docs: update Firestore schema for notes
 refactor(backend): extract auth middleware
 test: add integration tests for health route
 chore: upgrade firebase-admin to v13
@@ -59,24 +54,24 @@ chore: upgrade firebase-admin to v13
 
 ## Merge Strategy
 
-| Direction | Strategy | Why |
-|-----------|----------|-----|
-| `feature/*` → `develop` | Squash merge | Clean linear history on develop |
-| `release/*` → `main` | Merge commit | Preserve release history |
-| `hotfix/*` → `main` | Merge commit | Preserve fix history |
-| `main` → `develop` (back-merge) | Merge commit | Bring hotfix back to develop |
+Squash merge every PR into `main` — keeps history linear and each merge maps to one logical
+change.
 
-## Release Rule
+## Protected Branch
 
-Only **one** `release/*` branch may exist at a time. Complete or abandon the current release before starting another — concurrent releases deploy to the same staging environment and would overwrite each other.
-
-If a production fix is needed while a release is in staging, use `hotfix/*` instead (branches from `main`, bypasses staging).
-
-## Protected Branches
-
-`main` and `develop` are protected — no direct pushes. All changes go through pull requests.
+`main` is protected — no direct pushes. All changes go through a pull request.
 
 CI must pass before merge:
 - Lint + typecheck
 - Unit tests
 - Dependency vulnerability audit (`pnpm audit`)
+
+## Tagging a milestone (optional)
+
+If you want to mark a submission or checkpoint, tag `main` directly — no release branch needed:
+
+```bash
+git checkout main && git pull origin main
+git tag v0.1.0 -m "Milestone: <what this is>"
+git push origin v0.1.0
+```

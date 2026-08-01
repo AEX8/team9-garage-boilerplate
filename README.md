@@ -126,21 +126,19 @@ pnpm run validate         # Check for unreplaced template placeholders
 
 Security is enforced in independent layers — Claude Code guard hooks, HTTP hardening (helmet/CORS/rate limits), token + session-cookie auth, Zod input validation, default-deny Firestore rules, and CI scanning (`pnpm audit`). See [docs/SECURITY.md](docs/SECURITY.md).
 
-## Git Workflow (Gitflow)
+## Git Workflow
 
 | Branch | Purpose |
 |--------|---------|
-| `main` | Production |
-| `develop` | Integration |
-| `feature/*` | New features → develop |
-| `release/*` | Release prep → main |
-| `hotfix/*` | Urgent fixes → main |
+| `main` | Production — protected, no direct pushes |
+| `feature/*` | New features → PR back to `main` |
+| `hotfix/*` | Urgent fixes → PR back to `main` |
 
 Use the Claude Code skills `/git-feature`, `/git-hotfix`, `/git-release`. Details: [docs/GIT-WORKFLOW.md](docs/GIT-WORKFLOW.md).
 
 ## Claude Code Harness
 
-The repo ships a pre-configured harness: three MCP servers (**context7** for live library docs, **firebase** for Firestore/deploy tooling, **stitch** for design-to-code), three sub-agents (**security-reviewer**, **doc-auditor**, **test-writer**), enforcement hooks (blocks `any`, secret prefixes, direct pushes to `main`/`develop`, unapproved deploys), and skills for scaffolding and quality:
+The repo ships a pre-configured harness: three MCP servers (**context7** for live library docs, **firebase** for Firestore/deploy tooling, **stitch** for design-to-code), three sub-agents (**security-reviewer**, **doc-auditor**, **test-writer**), enforcement hooks (blocks `any`, secret prefixes, direct pushes to `main`, unapproved deploys), and skills for scaffolding and quality:
 
 | Category | Skills |
 |----------|--------|
@@ -157,7 +155,8 @@ See [CLAUDE.md](CLAUDE.md) for the full harness reference.
 |-------|------|
 | **Beginner guide (start here)** | [docs/GUIDE.md](docs/GUIDE.md) |
 | Verified walkthrough (all steps + code) | [docs/TUTORIAL-WALKTHROUGH.md](docs/TUTORIAL-WALKTHROUGH.md) |
-| Copy-paste tutorial (no AI, exact file paths) | [docs/COPY-PASTE-TUTORIAL.md](docs/COPY-PASTE-TUTORIAL.md) |
+| Copy-paste setup (no AI, exact steps) | [docs/COPY-PASTE-SETUP.md](docs/COPY-PASTE-SETUP.md) |
+| Copy-paste feature build (no AI, exact file paths) | [docs/COPY-PASTE-FEATURE.md](docs/COPY-PASTE-FEATURE.md) |
 | Slide deck — system overview + AI tooling | [docs/garage-boilerplate-guide.pptx](docs/garage-boilerplate-guide.pptx) |
 | Slide deck — the notes feature, step by step | [docs/notes-feature-tutorial.pptx](docs/notes-feature-tutorial.pptx) |
 | Architecture + diagrams | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |

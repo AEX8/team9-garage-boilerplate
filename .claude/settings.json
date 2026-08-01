@@ -116,8 +116,8 @@
         "hooks": [
           {
             "type": "command",
-            "description": "Block direct pushes to main or develop",
-            "command": "case \"$CLAUDE_COMMAND\" in *'git push'*) if echo \"$CLAUDE_COMMAND\" | grep -qE 'origin (main|develop)'; then echo 'BLOCKED: Do not push directly to main or develop. Create a feature branch and open a PR.' >&2; exit 2; fi ;; esac"
+            "description": "Block direct pushes to main",
+            "command": "case \"$CLAUDE_COMMAND\" in *'git push'*) if echo \"$CLAUDE_COMMAND\" | grep -qE 'origin main'; then echo 'BLOCKED: Do not push directly to main. Create a feature branch and open a PR.' >&2; exit 2; fi ;; esac"
           },
           {
             "type": "command",

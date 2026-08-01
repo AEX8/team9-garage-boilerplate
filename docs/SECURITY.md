@@ -261,7 +261,7 @@ The `.claude/settings.json` hooks enforce security patterns automatically:
 | PostToolUse — env files | Blocks writing `.env.local`, `.env.production`, `.env.staging` (only `.env.example` is safe) |
 | PostToolUse — admin.ts | Blocks `'use client'` in `lib/firebase/admin.ts` |
 | PreToolUse — firebase deploy | Blocks `firebase deploy` — requires explicit user approval |
-| PreToolUse — git push | Blocks direct pushes to `main` or `develop` |
+| PreToolUse — git push | Blocks direct pushes to `main` |
 
 ---
 
