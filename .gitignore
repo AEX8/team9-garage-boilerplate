@@ -48,7 +48,6 @@ Thumbs.db
 *.log
 *.tsbuildinfo
 .turbo/
-.firebaserc
 service-account.json
 docs/BOILERPLATE-COMPARISON.md
 docs/BOILERPLATE-BENCHMARK.md
