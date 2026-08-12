@@ -12,160 +12,199 @@ import { FullPageSpinner } from '@/components/shared/LoadingSpinner'
 
 export default function SignInPage() {
   const router = useRouter()
-  const { user, loading, signInWithEmail, signInWithGoogle } = useAuth()
+
+  /*
+   * Google authentication is intentionally not displayed because it does not
+   * appear in the approved authentication mockup.
+   */
+  const { user, loading, signInWithEmail } = useAuth()
 
   const {
     register,
     handleSubmit,
+
+    /*
+     * setError lets Firebase authentication failures appear beneath the
+     * password field instead of inside a popup notification.
+     */
+    setError,
+
     formState: { errors, isSubmitting },
   } = useForm<LoginInput>({
     resolver: zodResolver(loginSchema),
   })
 
+  /*
+   * Keep the boilerplate's existing behaviour for already signed-in users.
+   */
   useEffect(() => {
     if (!loading && user) {
       router.replace('/dashboard')
     }
   }, [loading, user, router])
 
+  /*
+   * The sign-up flow redirects here after sending a verification email.
+   * This will be a popup because it is a page-level success notification,
+   * not an invalid-password error.
+   */
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
+
     if (params.get('verification') === 'sent') {
       toast.success('Verification email sent. Verify your email, then sign in.')
     }
   }, [])
 
-  if (loading) return <FullPageSpinner />
+  if (loading) {
+    return <FullPageSpinner />
+  }
 
   const onSubmit = async (data: LoginInput) => {
     try {
+      /*
+       * Preserve the original Firebase email/password authentication,
+       * verification check and session-cookie behaviour.
+       */
       await signInWithEmail(data.email, data.password)
+
       toast.success('Signed in successfully')
+
+      
       router.replace('/dashboard')
       router.refresh()
     } catch (error: unknown) {
       if (error instanceof Error && error.message.includes('email-not-verified')) {
+        /*
+         * A page-level notification for unverified account.
+         */
         toast.error('Please verify your email before signing in.')
-      } else {
-        toast.error('Invalid email or password')
+        return
       }
-    }
-  }
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await signInWithGoogle()
-      router.replace('/dashboard')
-    } catch {
-      toast.error('Google sign-in failed. Please try again.')
+      /*
+       * Any invalid-credential error is attached to the Password field.
+       */
+      setError(
+        'password',
+        {
+          type: 'server',
+          message: 'Invalid email or password',
+        },
+        {
+          shouldFocus: true,
+        }
+      )
     }
   }
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-1 text-center">
-        <h1 className="text-2xl font-bold tracking-tight">Sign in</h1>
-        <p className="text-sm text-zinc-500">Enter your credentials to continue</p>
-      </div>
+    <section className="w-full rounded-[22px] border border-[#F6B934] bg-white px-7 py-9 shadow-[0_18px_45px_rgba(45,11,105,0.12)] sm:px-9">
+      {/* Card title and supporting text from the approved mockup. */}
+      <header className="mb-7">
+        <h2 className="text-3xl font-extrabold tracking-tight text-[#2D0B69]">
+          Welcome back!
+        </h2>
 
-      <button
-        type="button"
-        onClick={handleGoogleSignIn}
-        className="flex w-full items-center justify-center gap-3 rounded-md border border-zinc-300 bg-white px-4 py-2.5 text-sm font-medium shadow-sm transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:bg-zinc-900 dark:hover:bg-zinc-800"
-      >
-        <svg className="h-4 w-4" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-            fill="#4285F4"
-          />
-          <path
-            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-            fill="#34A853"
-          />
-          <path
-            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-            fill="#FBBC05"
-          />
-          <path
-            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-            fill="#EA4335"
-          />
-        </svg>
-        Continue with Google
-      </button>
+        <p className="mt-2 text-sm text-[#7A8190]">
+          Use your email to hop back in.
+        </p>
+      </header>
 
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-zinc-200 dark:border-zinc-700" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-zinc-50 px-2 text-zinc-400 dark:bg-zinc-950">or</span>
-        </div>
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-1.5">
-          <label htmlFor="email" className="text-sm font-medium">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5" noValidate>
+        {/* Email input and its inline validation error. */}
+        <div>
+          <label htmlFor="email" className="mb-2 block text-sm font-bold text-[#2D0B69]">
             Email
           </label>
+
           <input
             id="email"
             type="email"
-            autoComplete="email"
-            aria-invalid={!!errors.email}
+            autoComplete="username"
+            placeholder="you@company.com"
+            aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? 'email-error' : undefined}
-            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-500 focus:outline-none aria-invalid:border-red-500 dark:border-zinc-700 dark:bg-zinc-900"
-            placeholder="you@example.com"
+            className="h-12 w-full rounded-xl border border-[#E8DED3] bg-[#FFFCF8] px-4 text-sm text-[#2D0B69] outline-none transition placeholder:text-[#A9B0BF] focus:border-[#8E4DE8] focus:ring-2 focus:ring-[#8E4DE8]/20 aria-invalid:border-red-500 aria-invalid:ring-red-500/15"
             {...register('email')}
           />
+
           {errors.email && (
-            <p id="email-error" className="text-xs text-red-500" role="alert">
+            <p
+              id="email-error"
+              className="mt-1.5 text-xs font-medium text-red-600"
+              role="alert"
+            >
               {errors.email.message}
             </p>
           )}
         </div>
 
-        <div className="space-y-1.5">
-          <div className="flex items-center justify-between">
-            <label htmlFor="password" className="text-sm font-medium">
+        {/* Password label and password-reset link. */}
+        <div>
+          <div className="mb-2 flex items-center justify-between gap-4">
+            <label htmlFor="password" className="block text-sm font-bold text-[#2D0B69]">
               Password
             </label>
+
+            <Link
+              href="/auth/forgot-password"
+              className="text-xs font-semibold text-[#8E4DE8] underline decoration-1 underline-offset-2 transition hover:text-[#2D0B69]"
+            >
+              Forgot password?
+            </Link>
           </div>
+
+          {/*
+           * Both client-side validation and Firebase invalid-credential errors
+           * are displayed beneath this input through errors.password.
+           */}
           <input
             id="password"
             type="password"
             autoComplete="current-password"
-            aria-invalid={!!errors.password}
-            aria-describedby={errors.password ? 'password-error' : undefined}
-            className="w-full rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm shadow-sm placeholder:text-zinc-400 focus:ring-2 focus:ring-zinc-500 focus:outline-none aria-invalid:border-red-500 dark:border-zinc-700 dark:bg-zinc-900"
             placeholder="••••••••"
+            aria-invalid={Boolean(errors.password)}
+            aria-describedby={errors.password ? 'password-error' : undefined}
+            className="h-12 w-full rounded-xl border border-[#E8DED3] bg-[#FFFCF8] px-4 text-sm text-[#2D0B69] outline-none transition placeholder:text-[#A9B0BF] focus:border-[#8E4DE8] focus:ring-2 focus:ring-[#8E4DE8]/20 aria-invalid:border-red-500 aria-invalid:ring-red-500/15"
             {...register('password')}
           />
+
+          {/*
+           * This is where "Invalid email or password" appears.
+           * role="alert" announces it to assistive technology.
+           */}
           {errors.password && (
-            <p id="password-error" className="text-xs text-red-500" role="alert">
+            <p
+              id="password-error"
+              className="mt-1.5 text-xs font-medium text-red-600"
+              role="alert"
+            >
               {errors.password.message}
             </p>
           )}
         </div>
 
+        {/* Email/password submit button with loading and disabled states. */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full rounded-md bg-black px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-zinc-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-black dark:hover:bg-zinc-200"
+          className="mt-2 flex h-12 w-full items-center justify-center rounded-full border-b-[3px] border-[#F36F16] bg-[#FF8A36] px-5 text-sm font-bold text-white transition hover:bg-[#F97E26] focus:ring-4 focus:ring-[#FF8A36]/25 focus:outline-none disabled:cursor-not-allowed disabled:opacity-60"
         >
-          {isSubmitting ? 'Signing in…' : 'Sign in'}
+          {isSubmitting ? 'Signing in…' : 'Sign In'}
         </button>
       </form>
 
-      <p className="text-center text-sm text-zinc-500">
-        Don&apos;t have an account?{' '}
+      {/* Link to the sign-up screen. */}
+      <p className="mt-7 text-center text-sm text-[#7A8190]">
+        New here?{' '}
         <Link
           href="/auth/signup"
-          className="font-medium text-zinc-900 hover:underline dark:text-white"
+          className="font-bold text-[#2D0B69] underline decoration-1 underline-offset-2 transition hover:text-[#8E4DE8]"
         >
-          Create one
+          Create account
         </Link>
       </p>
-    </div>
+    </section>
   )
 }
