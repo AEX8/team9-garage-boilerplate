@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import { getServerSession } from '@/actions/auth.actions'
+import SignOutButton from './SignOutButton'
 
 const teamMembers = [
   {
@@ -50,18 +51,22 @@ export default async function TeamPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-amber-50 via-white to-indigo-100 px-6 py-10">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-12">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.3em] text-indigo-700">
-            Team 9 Garage
-          </p>
+        <div className="mb-12 flex items-start justify-between gap-6">
+          <div>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-[0.3em] text-indigo-700">
+              Team 9 Garage
+            </p>
 
-          <h1 className="text-4xl font-bold tracking-tight text-indigo-950 sm:text-5xl">
-            Meet the Team
-          </h1>
+            <h1 className="text-4xl font-bold tracking-tight text-indigo-950 sm:text-5xl">
+              Meet the Team
+            </h1>
 
-          <p className="mt-4 max-w-2xl text-zinc-600">
-            Meet the people working together to design, build, and deliver the Team 9 Garage project.
-          </p>
+            <p className="mt-4 max-w-2xl text-zinc-600">
+              Meet the people working together to design, build, and deliver the Team 9 Garage project.
+            </p>
+          </div>
+
+          <SignOutButton />
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
