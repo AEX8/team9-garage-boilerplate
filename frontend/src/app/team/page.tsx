@@ -10,6 +10,10 @@ const teamMembers = [
     image: '/team/Gayath.jpg',
     blurb:
       'Organises the team, coordinates tasks, and keeps the project moving toward completion.',
+    bio:
+      "I'm a Computer Science student at RMIT with a strong interest in machine learning, AI, and data science. Outside of university, I enjoy exploring new technologies and spending my free time swimming or playing poker.",
+    accent: 'border-sky-400',
+    badge: 'bg-sky-100 text-sky-700',
   },
   {
     name: 'Fatima Hubali',
@@ -17,6 +21,10 @@ const teamMembers = [
     image: '/team/Fatima.JPG',
     blurb:
       'Helps define project requirements and makes sure the team understands what needs to be built.',
+    bio:
+      "I'm a Computer Science student at RMIT University with a strong interest in the intersection of business and technology. I'm particularly interested in AI, data analytics, consulting, automation, and digital transformation, and how these areas can be used to solve real business problems and improve decision-making. I enjoy learning how emerging technologies can create practical value for people and organisations.",
+    accent: 'border-amber-400',
+    badge: 'bg-amber-100 text-amber-700',
   },
   {
     name: 'Amritha Selvaganapathi',
@@ -24,6 +32,10 @@ const teamMembers = [
     image: '/team/Amritha.jpg',
     blurb:
       'Designs the user experience and creates clear, user-friendly layouts for the project.',
+    bio:
+      "I'm a Computer Science student at RMIT with a strong interest in UX/UI, product and business analysis, technology consulting, and client-facing roles that bridge users, business, and technology. Outside of university, I enjoy teaching yoga, going to Pilates, and exploring the city.",
+    accent: 'border-emerald-400',
+    badge: 'bg-emerald-100 text-emerald-700',
   },
   {
     name: 'Kashaf Fatima',
@@ -31,6 +43,10 @@ const teamMembers = [
     image: '/team/Kashaf.PNG',
     blurb:
       'Builds and supports application features while helping turn the team’s designs into working code.',
+    bio:
+      "I'm a Computer Science student at RMIT University with a strong interest in the intersection of business and technology. I'm particularly interested in AI, data analytics, consulting, automation, and digital transformation, and how these areas can be used to solve real business problems and improve decision-making. I enjoy learning how emerging technologies can create practical value for people and organisations.",
+    accent: 'border-pink-400',
+    badge: 'bg-pink-100 text-pink-700',
   },
   {
     name: 'Ibrahim Allouche',
@@ -38,6 +54,10 @@ const teamMembers = [
     image: '/team/Ibrahim.PNG',
     blurb:
       'Develops application features and works on authentication, protected pages, and backend integration.',
+    bio:
+      "I'm passionate about cybersecurity and networking, with a strong focus on building secure and reliable systems. I also have a strong interest in entrepreneurship and creating new ideas that can grow into real opportunities. Outside of technology, I enjoy cars and learning how they are designed, built, and modified. I'm also fascinated by jet engineering and want to gain experience with companies involved in aircraft and engine development. I enjoy hands-on learning, challenging projects, and expanding my skills across technology, engineering, and business.",
+    accent: 'border-purple-400',
+    badge: 'bg-purple-100 text-purple-700',
   },
 ]
 
@@ -62,7 +82,8 @@ export default async function TeamPage() {
             </h1>
 
             <p className="mt-4 max-w-2xl text-zinc-600">
-              Meet the people working together to design, build, and deliver the Team 9 Garage project.
+              Meet the people working together to design, build, and deliver the
+              Team 9 Garage project.
             </p>
           </div>
 
@@ -80,6 +101,7 @@ export default async function TeamPage() {
                   src={member.image}
                   alt={member.name}
                   fill
+                  unoptimized
                   className="object-cover"
                   sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 20vw"
                 />
@@ -100,6 +122,56 @@ export default async function TeamPage() {
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="mt-20">
+          <div className="mb-8 text-center">
+            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-indigo-700">
+              Get to know us
+            </p>
+
+            <h2 className="mt-2 text-3xl font-bold text-indigo-950">
+              Our Team
+            </h2>
+          </div>
+
+          <div className="mx-auto flex max-w-5xl flex-col gap-5">
+            {teamMembers.map((member) => (
+              <article
+                key={`${member.name}-bio`}
+                className="flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-lg sm:flex-row sm:items-center"
+              >
+                <div
+                  className={`relative h-24 w-24 shrink-0 overflow-hidden rounded-full border-2 ${member.accent}`}
+                >
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    unoptimized
+                    className="object-cover"
+                    sizes="96px"
+                  />
+                </div>
+
+                <div className="w-full sm:w-52 sm:shrink-0">
+                  <h3 className="text-lg font-bold leading-tight text-indigo-950">
+                    {member.name}
+                  </h3>
+
+                  <span
+                    className={`mt-2 inline-block rounded-full px-3 py-1 text-xs font-semibold ${member.badge}`}
+                  >
+                    {member.role}
+                  </span>
+                </div>
+
+                <p className="text-sm leading-6 text-zinc-600 sm:flex-1">
+                  {member.bio}
+                </p>
+              </article>
+            ))}
+          </div>
         </div>
       </div>
     </main>
